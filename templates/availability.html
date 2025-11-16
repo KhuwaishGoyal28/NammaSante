@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Farmer Availability{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h2 class="text-center mb-4 text-success"><i class="bi bi-search"></i> Find Farmers by Location</h2>
+
+    <div class="card shadow-lg border-0 rounded-3 mb-4">
+      <div class="card-body p-4">
+        <form method="POST" class="row g-3">
+          <div class="col-md-6">
+            <label for="state" class="form-label fw-semibold">State</label>
+            <select class="form-select form-select-lg" id="state" name="state" required onchange="updateCities()">
+              <option value="">Select State</option>
+              {% for state in state_city_mapping.keys() %}
+              <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>{{ state }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="city" class="form-label fw-semibold">City</label>
+            <select class="form-select form-select-lg" id="city" name="city" required>
+              <option value="">Select City</option>
+              {% for city in cities %}
+              <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>{{ city }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-lg px-5"><i class="bi bi-search"></i> Search Farmers</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if farmers %}
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-body p-4">
+        <h4 class="text-success mb-3"><i class="bi bi-people"></i> Available Farmers</h4>
+        <div class="list-group list-group-flush">
+          {% for farmer in farmers %}
+          <div class="list-group-item d-flex justify-content-between align-items-center border-0">
+            <div>
+              <h6 class="mb-1">{{ farmer.Farmer_Name }}</h6>
+              <small class="text-muted">{{ farmer.Crop_Name }} • {{ farmer.District }}, {{ farmer.State }}</small>
+            </div>
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#farmerModal{{ loop.index }}">
+              <i class="bi bi-eye"></i> View Details
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals for farmer details -->
+    {% for farmer in farmers %}
+    <div class="modal fade" id="farmerModal{{ loop.index }}" tabindex="-1" aria-labelledby="farmerModalLabel{{ loop.index }}" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="farmerModalLabel{{ loop.index }}"><i class="bi bi-person-circle"></i> {{ farmer.Farmer_Name }} Details</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <p><strong><i class="bi bi-geo-alt"></i> Location:</strong> {{ farmer.District }}, {{ farmer.State }}</p>
+                <p><strong><i class="bi bi-tree"></i> Crop:</strong> {{ farmer.Crop_Name }}</p>
+                <p><strong><i class="bi bi-calendar"></i> Season:</strong> {{ farmer.Season }}</p>
+                <p><strong><i class="bi bi-moisture"></i> Soil Type:</strong> {{ farmer.Soil_Type }}</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong><i class="bi bi-rulers"></i> Area Cultivated:</strong> {{ farmer.Area_Cultivated_Acres }} acres</p>
+                <p><strong><i class="bi bi-graph-up"></i> Expected Yield:</strong> {{ farmer.Expected_Yield_Tonnes }} tonnes</p>
+                <p><strong><i class="bi bi-graph-down"></i> Actual Yield:</strong> {{ farmer.Actual_Yield_Tonnes }} tonnes</p>
+                <p><strong><i class="bi bi-currency-rupee"></i> Market Price per Tonne:</strong> ₹{{ farmer.Market_Price_per_Tonne }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('food_chain') }}" class="btn btn-secondary btn-lg px-4"><i class="bi bi-arrow-left"></i> Back to Food Chain</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const stateCityMapping = {{ state_city_mapping | tojson }};
+
+  function updateCities() {
+    const stateSelect = document.getElementById('state');
+    const citySelect = document.getElementById('city');
+    const selectedState = stateSelect.value;
+
+    citySelect.innerHTML = '<option value="">Select City</option>';
+
+    if (selectedState && stateCityMapping[selectedState]) {
+      stateCityMapping[selectedState].forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+  }
+
+  // Initialize cities on page load if state is selected
+  document.addEventListener('DOMContentLoaded', function() {
+    const stateSelect = document.getElementById('state');
+    if (stateSelect.value) {
+      updateCities();
+    }
+  });
+</script>
+{% endblock %}

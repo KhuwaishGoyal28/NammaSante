@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}My Profile{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-body p-5">
+        <h2 class="text-center mb-4 text-success"><i class="bi bi-person-circle"></i> My Profile</h2>
+        <form method="POST" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Farmer Name</label>
+            <input name="Farmer_Name" class="form-control" value="{{ profile.Farmer_Name or '' }}" required placeholder="Enter your full name">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Email</label>
+            <input class="form-control" value="{{ profile.Email or '' }}" readonly>
+          </div>
+
+          <hr class="my-4">
+          <h5 class="text-success mb-3"><i class="bi bi-geo-alt"></i> Location & Crop Details</h5>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">State</label>
+            <input name="State" class="form-control" value="{{ profile.State or '' }}" required placeholder="e.g., Karnataka">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">District</label>
+            <input name="District" class="form-control" value="{{ profile.District or '' }}" required placeholder="e.g., Bangalore">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Crop Name</label>
+            <input name="Crop_Name" class="form-control" value="{{ profile.Crop_Name or '' }}" placeholder="e.g., Rice">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Season</label>
+            <input name="Season" class="form-control" value="{{ profile.Season or '' }}" placeholder="e.g., Kharif">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Area Cultivated (Acres)</label>
+            <input name="Area_Cultivated_Acres" type="number" step="0.01" class="form-control" value="{{ profile.Area_Cultivated_Acres or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Expected Yield (Tonnes)</label>
+            <input name="Expected_Yield_Tonnes" type="number" step="0.01" class="form-control" value="{{ profile.Expected_Yield_Tonnes or '' }}">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Actual Yield (Tonnes)</label>
+            <input name="Actual_Yield_Tonnes" type="number" step="0.01" class="form-control" value="{{ profile.Actual_Yield_Tonnes or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Market Price per Tonne (₹)</label>
+            <input name="Market_Price_per_Tonne" type="number" step="0.01" class="form-control" value="{{ profile.Market_Price_per_Tonne or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Soil Type</label>
+            <input name="Soil_Type" class="form-control" value="{{ profile.Soil_Type or '' }}" placeholder="e.g., Alluvial">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Water Usage (Liters/Acre)</label>
+            <input name="Water_Usage_Liters_per_Acre" type="number" step="0.01" class="form-control" value="{{ profile.Water_Usage_Liters_per_Acre or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Fertilizer Usage (kg/Acre)</label>
+            <input name="Fertilizer_Usage_kg_per_Acre" type="number" step="0.01" class="form-control" value="{{ profile.Fertilizer_Usage_kg_per_Acre or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Sustainability Score</label>
+            <input name="Sustainability_Score" type="number" step="0.01" class="form-control" value="{{ profile.Sustainability_Score or '' }}">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Weather Condition</label>
+            <input name="Weather_Condition" class="form-control" value="{{ profile.Weather_Condition or '' }}" placeholder="e.g., Sunny">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Predicted Demand Next Season (Tonnes)</label>
+            <input name="Predicted_Demand_for_Next_Season_Tonnes" type="number" step="0.01" class="form-control" value="{{ profile.Predicted_Demand_for_Next_Season_Tonnes or '' }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Overproduction Risk</label>
+            <input name="Overproduction_Risk" class="form-control" value="{{ profile.Overproduction_Risk or '' }}" placeholder="Low/Medium/High">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label fw-semibold">Date Recorded</label>
+            <input type="date" name="Date_Recorded" class="form-control" value="{{ profile.Date_Recorded or '' }}">
+          </div>
+
+          <div class="col-12 text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5 me-3"><i class="bi bi-check-circle"></i> Update Profile</button>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-lg px-4"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');" class="d-inline ms-3">
+              <button type="submit" class="btn btn-danger btn-lg px-4"><i class="bi bi-trash"></i> Delete Account</button>
+            </form>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

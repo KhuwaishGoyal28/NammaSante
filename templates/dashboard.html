@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12">
+    <h3 class="text-center mb-5 text-success"><i class="bi bi-house-door"></i> Welcome, {{ profile.Farmer_Name if profile else 'Farmer' }}</h3>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" onclick="location.href='{{ url_for('farmer_help_desk') }}'" style="cursor: pointer; transition: all 0.3s ease;">
+          <div class="card-body">
+            <i class="bi bi-cloud-sun display-4 text-success mb-3"></i>
+            <h5 class="card-title text-success">🌱 Farmer Help Desk</h5>
+            <p class="card-text">Get real-time weather updates and personalized farming advice to optimize your crop yield.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" onclick="location.href='{{ url_for('food_chain') }}'" style="cursor: pointer; transition: all 0.3s ease;">
+          <div class="card-body">
+            <i class="bi bi-link-45deg display-4 text-success mb-3"></i>
+            <h5 class="card-title text-success">🛒 Food Chain Tracking</h5>
+            <p class="card-text">Monitor availability, demand, and waste management throughout the supply chain.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <a href="{{ url_for('profile') }}" class="btn btn-success rounded-circle shadow-lg" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease;">
+    <i class="bi bi-person"></i>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Food Chain Supply{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12">
+    <h2 class="text-center mb-5 text-success"><i class="bi bi-link-45deg"></i> 🌾 Food Chain Supply</h2>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" onclick="location.href='{{ url_for('availability') }}'" style="cursor: pointer; transition: all 0.3s ease;">
+          <div class="card-body">
+            <i class="bi bi-search display-4 text-success mb-3"></i>
+            <h5 class="card-title text-success">Availability</h5>
+            <p class="card-text">Find farmers and check crop availability in your area.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" onclick="location.href='{{ url_for('demand') }}'" style="cursor: pointer; transition: all 0.3s ease;">
+          <div class="card-body">
+            <i class="bi bi-bar-chart-line display-4 text-success mb-3"></i>
+            <h5 class="card-title text-success">Demand</h5>
+            <p class="card-text">Analyze crop demand and market requirements.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" style="cursor: pointer; transition: all 0.3s ease; opacity: 0.6;">
+          <div class="card-body">
+            <i class="bi bi-recycle display-4 text-secondary mb-3"></i>
+            <h5 class="card-title text-secondary">Waste Mgmt</h5>
+            <p class="card-text">Coming soon: Waste management solutions.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 shadow-lg border-0 rounded-3 text-center p-4" onclick="location.href='{{ url_for('crop_guidance') }}'" style="cursor: pointer; transition: all 0.3s ease;">
+          <div class="card-body">
+            <i class="bi bi-robot display-4 text-success mb-3"></i>
+            <h5 class="card-title text-success">AI Crop Guidance</h5>
+            <p class="card-text">Chat with AI assistant for farming advice and crop guidance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg px-4"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

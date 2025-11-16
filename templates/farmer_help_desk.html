@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Farmer Help Desk{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h2 class="text-center mb-4 text-success"><i class="bi bi-cloud-sun"></i> 🌱 Farmer Help Desk</h2>
+
+    <div class="card shadow-lg border-0 rounded-3 mb-4">
+      <div class="card-body p-4">
+        <form method="POST" class="row g-3">
+          <div class="col-md-6">
+            <label for="state" class="form-label fw-semibold">Select State</label>
+            <select name="state" id="state" class="form-select form-select-lg" required onchange="updateCities()">
+              <option value="">--Select State--</option>
+              {% for state in state_city_mapping.keys() %}
+                <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>{{ state }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="city" class="form-label fw-semibold">Select City</label>
+            <select name="city" id="city" class="form-select form-select-lg" required>
+              <option value="">--Select City--</option>
+              {% if selected_state %}
+                {% for city in state_city_mapping[selected_state] %}
+                  <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>{{ city }}</option>
+                {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-success btn-lg px-5"><i class="bi bi-check-circle"></i> Check Weather & Get Advice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if weather %}
+    <div class="card shadow-lg border-0 rounded-3 mb-4">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="bi bi-cloud-sun"></i> 🌤 Weather in {{ selected_city }}, {{ selected_state }}</h5>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-md-4">
+            <i class="bi bi-thermometer-half display-4 text-warning mb-2"></i>
+            <h6>Temperature</h6>
+            <p class="h4 text-success">{{ weather.temp }}°C</p>
+          </div>
+          <div class="col-md-4">
+            <i class="bi bi-moisture display-4 text-info mb-2"></i>
+            <h6>Humidity</h6>
+            <p class="h4 text-success">{{ weather.humidity }}%</p>
+          </div>
+          <div class="col-md-4">
+            <i class="bi bi-cloud display-4 text-secondary mb-2"></i>
+            <h6>Condition</h6>
+            <p class="h4 text-success">{{ weather.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if advice %}
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="bi bi-lightbulb"></i> 📖 Gemini 2.0 Farming Advice</h5>
+      </div>
+      <div class="card-body">
+        <p class="lead">{{ advice }}</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  const stateCityMapping = {{ state_city_mapping|tojson }};
+
+  function updateCities() {
+    const stateSelect = document.getElementById('state');
+    const citySelect = document.getElementById('city');
+    const selectedState = stateSelect.value;
+    citySelect.innerHTML = '<option value="">--Select City--</option>';
+    if(selectedState in stateCityMapping){
+      stateCityMapping[selectedState].forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.innerText = city;
+        citySelect.appendChild(opt);
+      });
+    }
+  }
+</script>
+{% endblock %}
